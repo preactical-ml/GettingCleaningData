@@ -10,6 +10,8 @@ Contained files:
 
 README.md: this file
 
+CodeBook.md: the code book
+
 run\_analysis.R: the script file, that must be placed in the directory
 containing the data
 
