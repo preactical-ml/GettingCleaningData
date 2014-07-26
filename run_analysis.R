@@ -19,8 +19,9 @@ train_activities <- merge(x=train_activ_num, y = act_labels, by = "V1")
 # Adds the subject and activity columns to test data
 train_data <- cbind(train_subject, train_activities[,2], train_raw_data)
 
-# assign meaningful names to the data
+# adds subject and activity to names
 col_names <- c("Subject", "Activity", as.character(col_names[,2]))
+# set the names
 names(test_data) <- col_names
 names(train_data) <- col_names
 
@@ -37,8 +38,14 @@ selected_columns <- sort(c(std_names,mean_names))
 selected_columns <- c(1, 2, selected_columns)
 
 # Selects only the requested columns
-selected_data = complete_data[,selected_columns]
-selected_names = names(complete_data)[selected_columns]
+selected_data <- complete_data[,selected_columns]
+selected_names <- names(complete_data)[selected_columns]
+# Remove parentheses and corrects names
+selected_names <- sub("\\(\\)", "", selected_names)
+selected_names <- sub("\\-(m|s)(ean|td)", "\\U\\1\\L\\2", selected_names, perl = T)
+selected_names <- sub("\\-([XYZ])", "\\1", selected_names, perl = T)
+
+names(selected_data) <- selected_names
 
 # Create the new data set by aggregating by subject and activity
 aggregated_data <- aggregate(. ~ Activity + Subject, data= selected_data, FUN=mean, na.rm=TRUE)
